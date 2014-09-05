@@ -5,7 +5,7 @@
 This package contains tools used by admins to maintain the Common Lisp
 Message of the Day service.
 
-### Creating A Public Key and Private Key pair
+### Creating A Public Key and Private Key Pair
 
 To authenticate as an admin, you need to have a DSA private key and an
 associated user name and a password to use to encrypt the private key
@@ -33,7 +33,6 @@ Once logged in, you can logout at any time using the `logout`
 function:
 
     (motd-admin:logout)
-
 
 ### License
 

@@ -29,9 +29,8 @@
     (with-open-file (*standard-output* filename
                                        :direction :output
                                        :if-does-not-exist :create)
-      (with-standard-io-syntax
-        (print (list :user user
-                     :key key))))))
+      (prin1 (list :user user
+                   :key key)))))
 
 (defun save-private-key (key user password
                          &key (salt (ironclad:random-data +key-length+ *crng*))
@@ -60,8 +59,7 @@ be given later to load the private key."
          (block-length (ironclad:block-length cipher))
 
          (key (with-output-to-string (*standard-output*)
-                (let ((*print-pretty* t))
-                  (prin1 key))))
+                (prin1 key)))
          (plaintext (trivial-utf-8:string-to-utf-8-bytes
                      (with-output-to-string (*standard-output*)
                        (princ key)
@@ -76,11 +74,10 @@ be given later to load the private key."
     (with-open-file (*standard-output* filename
                                        :direction :output
                                        :if-does-not-exist :create)
-      (with-standard-io-syntax
-        (print (list :salt (cl-base64:usb8-array-to-base64-string salt)
-                     :encrypted (cl-base64:usb8-array-to-base64-string
-                                 (subseq encrypted 0 n-bytes)
-                                 :columns 72)))))))
+      (prin1 (list :salt (cl-base64:usb8-array-to-base64-string salt)
+                   :encrypted (cl-base64:usb8-array-to-base64-string
+                               (subseq encrypted 0 n-bytes)
+                               :columns 72))))))
 
 (defun load-private-key (user password
                          &key (iv +iv+))

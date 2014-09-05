@@ -20,4 +20,6 @@
                (:file "login" :depends-on ("package"
                                            "crng"
                                            "keystore"))
-               (:file "authenticate" :depends-on ("package"))))
+               (:file "authenticate" :depends-on ("package"
+                                                  "crng"
+                                                  "login"))))

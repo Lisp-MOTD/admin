@@ -5,10 +5,12 @@
   :author "Patrick Stein <pat@nklein.com>"
   :version "0.1.20140904"
   :license "unlicense"
-  :depends-on (:drakma
+  :depends-on (:motd-commands
+               :drakma
                :ironclad
                :trivial-utf-8
-               :cl-base64)
+               :cl-base64
+               :cl-algebraic-data-type)
   :components ((:static-file "README.md")
                (:static-file "UNLICENSE")
                (:file "package")

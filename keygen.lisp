@@ -57,40 +57,13 @@
 (defun generate-dsa-private-key ()
   (let* ((x (ironclad:strong-random +q+ *crng*))
          (y (ironclad:expt-mod +g+ x +p+)))
-    (ironclad:make-private-key :dsa
-                               :p +p+
-                               :q +q+
-                               :g +g+
-                               :y y
-                               :x x)))
+    (motd-commands:dsa-private-key +p+ +q+ +g+ y x)))
 
 (defun extract-dsa-public-key (private-key)
-  (ironclad:make-public-key :dsa
-                            :p (ironclad:dsa-key-p private-key)
-                            :q (ironclad:dsa-key-q private-key)
-                            :g (ironclad:dsa-key-q private-key)
-                            :y (ironclad:dsa-key-y private-key)))
-
-(defmethod print-object ((key ironclad::dsa-private-key) stream)
-  (if *print-readably*
-      (call-next-method)
-      (pprint (list :dsa
-                    :p (ironclad:dsa-key-p key)
-                    :q (ironclad:dsa-key-q key)
-                    :g (ironclad:dsa-key-g key)
-                    :y (ironclad:dsa-key-y key)
-                    :x (ironclad:dsa-key-x key))
-              stream)))
-
-(defmethod print-object ((key ironclad::dsa-public-key) stream)
-  (if *print-readably*
-      (call-next-method)
-      (pprint (list :dsa
-                    :p (ironclad:dsa-key-p key)
-                    :q (ironclad:dsa-key-q key)
-                    :g (ironclad:dsa-key-g key)
-                    :y (ironclad:dsa-key-y key))
-              stream)))
+  (check-type private-key motd-commands:dsa-private-key)
+  (adt:with-data (motd-commands:dsa-private-key p q g y x) private-key
+    (declare (ignore x))
+    (motd-commands:dsa-public-key p q g y)))
 
 (defun generate-key-pair (user-name password)
   "Generate a new public/private key pair for the user with the given

@@ -6,8 +6,13 @@
   :version "0.1.20140904"
   :license "unlicense"
   :depends-on (:drakma
-               :ironclad)
+               :ironclad
+               :trivial-utf-8
+               :cl-base64)
   :components ((:static-file "README.md")
                (:static-file "UNLICENSE")
                (:file "package")
-               (:file "keygen" :depends-on ("package"))))
+               (:file "keygen" :depends-on ("package"))
+               (:file "keystore" :depends-on ("package"
+                                              "keygen"))
+               (:file "authenticate" :depends-on ("package"))))

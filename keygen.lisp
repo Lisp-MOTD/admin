@@ -72,3 +72,28 @@
                             :q (ironclad:dsa-key-q private-key)
                             :g (ironclad:dsa-key-q private-key)
                             :y (ironclad:dsa-key-y private-key)))
+
+(defmethod print-object ((key ironclad::dsa-private-key) stream)
+  (cond
+    (*print-pretty*
+     (pprint (list :dsa
+                   :p (ironclad:dsa-key-p key)
+                   :q (ironclad:dsa-key-q key)
+                   :g (ironclad:dsa-key-g key)
+                   :y (ironclad:dsa-key-y key)
+                   :x (ironclad:dsa-key-x key))
+             stream))
+    (t
+     (call-next-method))))
+
+(defmethod print-object ((key ironclad::dsa-public-key) stream)
+  (cond
+    (*print-pretty*
+     (pprint (list :dsa
+                   :p (ironclad:dsa-key-p key)
+                   :q (ironclad:dsa-key-q key)
+                   :g (ironclad:dsa-key-g key)
+                   :y (ironclad:dsa-key-y key))
+             stream))
+    (t
+     (call-next-method))))

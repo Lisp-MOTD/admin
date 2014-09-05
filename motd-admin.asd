@@ -12,7 +12,12 @@
   :components ((:static-file "README.md")
                (:static-file "UNLICENSE")
                (:file "package")
-               (:file "keygen" :depends-on ("package"))
+               (:file "crng" :depends-on ("package"))
                (:file "keystore" :depends-on ("package"
-                                              "keygen"))
+                                              "crng"))
+               (:file "keygen" :depends-on ("package"
+                                            "crng"))
+               (:file "login" :depends-on ("package"
+                                           "crng"
+                                           "keystore"))
                (:file "authenticate" :depends-on ("package"))))

@@ -9,10 +9,44 @@
                    :initial-contents '(60 120 232  74  18 120 178 196
                                        92 108 244 251 182 128  45  26)))
 
-(defun save-private-key (key filename password
+(defun %user-public-key-filename (user)
+  "Return the name of the public key file to be used for the given USER name."
+  (make-pathname :directory "./"
+                 :name user
+                 :type "pub"))
+
+(defun %user-private-key-filename (user)
+  "Return the name of the private key file to be used for the given USER name."
+  (make-pathname :directory "./"
+                 :name user
+                 :type "key"))
+
+(defun save-public-key (key user)
+  "Save the public key KEY for the given USER."
+  (check-type key ironclad::dsa-public-key)
+  (check-type user string)
+  (let* ((filename (%user-public-key-filename user)))
+    (with-open-file (*standard-output* filename
+                                       :direction :output
+                                       :if-does-not-exist :create)
+      (with-standard-io-syntax
+        (print (list :user user
+                     :key key))))))
+
+(defun save-private-key (key user password
                          &key (salt (ironclad:random-data +key-length+ *crng*))
                               (iv +iv+))
-  (let* ((cipher-key (ironclad:derive-key
+  "Save the private key KEY for the given USER.  Encrypt the stored
+KEY using the given PASSWORD.  Use the given SALT to help randomize
+the encrypted data.  Use the given IV as the initialization vector for
+the encryption.  If the IV parameter is given, the identical IV must
+be given later to load the private key."
+  (check-type key ironclad::dsa-private-key)
+  (check-type user string)
+  (check-type password string)
+  (let* ((filename (%user-private-key-filename user))
+
+         (cipher-key (ironclad:derive-key
                       (ironclad:make-kdf 'ironclad:pbkdf2
                                          :digest 'ironclad:sha256)
                       (trivial-utf-8:string-to-utf-8-bytes password)
@@ -26,7 +60,8 @@
          (block-length (ironclad:block-length cipher))
 
          (key (with-output-to-string (*standard-output*)
-                (prin1 key)))
+                (let ((*print-pretty* t))
+                  (prin1 key))))
          (plaintext (trivial-utf-8:string-to-utf-8-bytes
                      (with-output-to-string (*standard-output*)
                        (princ key)
@@ -47,10 +82,17 @@
                                  (subseq encrypted 0 n-bytes)
                                  :columns 72)))))))
 
-(defun load-private-key (filename password
+(defun load-private-key (user password
                          &key (iv +iv+))
+  "Load the private key stored for the given USER.  Decrypt the stored
+KEY using the given PASSWORD.  Use the given IV as the initialization
+vector for the encryption.  The IV parameter must match the IV
+parameter used to store the KEY."
+  (check-type user string)
+  (check-type password string)
   (handler-case
-      (let* ((info (let ((*read-eval* nil))
+      (let* ((filename (%user-private-key-filename user))
+             (info (let ((*read-eval* nil))
                      (with-open-file (*standard-input* filename)
                        (read))))
 

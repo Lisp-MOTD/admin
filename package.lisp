@@ -1,3 +1,5 @@
 (defpackage #:motd-admin
   (:use #:cl)
-  (:export))
+  (:export :generate-key-pair)
+  (:export :login
+           :logout))

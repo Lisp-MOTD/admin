@@ -18,9 +18,10 @@
 
   (let* ((plaintext (trivial-utf-8:string-to-utf-8-bytes
                      (with-output-to-string (*standard-output*)
-                       (prin1 (list :time (get-universal-time)
-                                    :salt (ironclad:random-bits 64 *crng*)
-                                    :payload payload)))))
+                       (prin1 (motd-commands:signed-message
+                               (ironclad:random-bits 64 *crng*)
+                               (get-universal-time)
+                               payload)))))
          (signature (ironclad:sign-message
                      (create-signing-key (credential-private-key *credentials*))
                      (ironclad:digest-sequence :sha1 plaintext))))

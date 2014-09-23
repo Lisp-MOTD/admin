@@ -24,4 +24,8 @@
                                            "keystore"))
                (:file "authenticate" :depends-on ("package"
                                                   "crng"
-                                                  "login"))))
+                                                  "login"))
+               (:file "send" :depends-on ("package"
+                                          "authenticate"))
+               (:file "add-translation" :depends-on ("package"
+                                                     "send"))))

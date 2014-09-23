@@ -2,4 +2,5 @@
   (:use #:cl)
   (:export :generate-key-pair)
   (:export :login
-           :logout))
+           :logout)
+  (:export :add-translation))

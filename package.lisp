@@ -3,4 +3,5 @@
   (:export :generate-key-pair)
   (:export :login
            :logout)
-  (:export :add-translation))
+  (:export :add-translation
+           :delete-translation))

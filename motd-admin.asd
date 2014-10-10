@@ -28,4 +28,10 @@
                (:file "send" :depends-on ("package"
                                           "authenticate"))
                (:file "add-translation" :depends-on ("package"
-                                                     "send"))))
+                                                     "send"))
+               (:file "delete-translation" :depends-on ("package"
+                                                        "send"))
+               (:file "add-tag" :depends-on ("package"
+                                             "send"))
+               (:file "delete-tag" :depends-on ("package"
+                                                "send"))))

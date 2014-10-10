@@ -4,4 +4,10 @@
   (:export :login
            :logout)
   (:export :add-translation
-           :delete-translation))
+           :delete-translation)
+  (:export :add-tag
+           :delete-tag))
+;(defgeneric propose-message (message))
+;(defgeneric show-proposed-messages ())
+;(defgeneric publish-message (message-id))
+;(defgeneric delete-message (message-id))

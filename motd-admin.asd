@@ -34,4 +34,6 @@
                (:file "add-tag" :depends-on ("package"
                                              "send"))
                (:file "delete-tag" :depends-on ("package"
-                                                "send"))))
+                                                "send"))
+               (:file "propose-message" :depends-on ("package"
+                                                     "send"))))
